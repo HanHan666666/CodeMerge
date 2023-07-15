@@ -10,17 +10,22 @@ import (
 )
 
 func main() {
-	//输出当前所在目录
 	dir, _ := os.Getwd()
-	fmt.Println("当前目录:", dir)
 
 	// 定义命令行参数
 	srcDir := flag.String("src", dir, "源代码目录(绝对路径)")
 	outFile := flag.String("out", "CodeMerged.txt", "输出文件路径")
+	//输出版本号
+	showVersion := flag.Bool("version", false, "显示版本号")
 	// orderFiles := flag.String("order", "", "排序文件的名字")
 	// onlyFiles := flag.String("only", "", "仅合并特定文件的名字")
 
 	flag.Parse()
+
+	internal.ShowVersion(showVersion)
+
+	//输出当前所在目录
+	fmt.Println("当前目录:", dir)
 
 	// 获取源代码目录下的文件列表
 	files, err := internal.GetAllFileIncludeSubFolder(*srcDir)
@@ -41,18 +46,15 @@ func main() {
 		log.Println("没有找到 .gitignore 文件, 将不会根据 .gitignore 文件过滤文件")
 	}
 
-	//过滤要排除的文件
-	//files = internal.FilterFiles(files, ignoreFiles)
-
 	// TODO
 	// // 按orderFiles排序
 	// if *orderFiles != "" {
-	// 	files = internal.OrderFiles(files, strings.Split(*orderFiles, ","))
+	// 	fileOperate = internal.OrderFiles(fileOperate, strings.Split(*orderFiles, ","))
 	// }
 
 	// // 仅保留onlyFiles指定的文件
 	// if *onlyFiles != "" {
-	// 	files = internal.OnlyFiles(files, strings.Split(*onlyFiles, ","))
+	// 	fileOperate = internal.OnlyFiles(fileOperate, strings.Split(*onlyFiles, ","))
 	// }
 
 	// 执行合并

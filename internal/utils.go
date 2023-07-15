@@ -113,21 +113,3 @@ func FilterFiles(files []string, ignoreFile string) ([]string, error) {
 	}
 	return filtered, nil
 }
-
-//func FilterFiles(files []string) ([]string, error) {
-//	dir, _ := os.Getwd()
-//	ignoreFile := filepath.Join(dir, ".gitignore")
-//	gi, err := ignore.CompileIgnoreFile(ignoreFile)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	var filtered []string
-//	for _, file := range files {
-//		if !gi.MatchesPath(file) {
-//			filtered = append(filtered, file)
-//		}
-//	}
-//
-//	return filtered, nil
-//}
