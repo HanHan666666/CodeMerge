@@ -16,17 +16,12 @@ func GetAllFileIncludeSubFolder(folder string) ([]string, error) {
 			return err
 		}
 
-		if !fi.IsDir() {
-			if fi.Name()[0] != '.' {
-				result = append(result, path)
-			}
-		} else {
+		if fi.IsDir() {
 			// 如果这个目录是.开头的，说明是一个隐藏目录，忽略这个目录
 			if fi.Name()[0] == '.' {
 				return filepath.SkipDir
 			}
 		}
-
 		return nil
 	})
 	if err != nil {
