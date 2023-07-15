@@ -2,6 +2,7 @@ package internal
 
 import (
 	"bufio"
+	"errors"
 	"io"
 	"log"
 	"os"
@@ -39,7 +40,8 @@ func isTextFile(filename string) bool {
 func ReadFile(filename string) ([]byte, error) {
 	// 判断是不是纯文本文件
 	if !isTextFile(filename) {
-		return nil, nil
+		log.Printf("%s is not a text file", filename)
+		return nil, errors.New("not a text file")
 	}
 	f, err := os.Open(filename)
 	if err != nil {
