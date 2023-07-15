@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 func main() {
@@ -27,17 +28,18 @@ func main() {
 		fmt.Println("获取文件列表失败:", err)
 		os.Exit(1)
 	}
-	log.Printf("获取文件列表成功, 文件数量: %d\n", len(files))
-	log.Println("文件列表:", files)
 
 	// 检查是否有 .gitignore 文件
-	//var ignoreFiles []string
-	//if internal.IsIgnoreFileExist(*srcDir) {
-	//	ignorePAth := *srcDir + "/.gitignore"
-	//	// 读取 .gitignore 文件
-	//	ignoreBytes, _ := internal.ReadFile(ignorePAth)
-	//	ignoreFiles = strings.Split(string(ignoreBytes), "\n")
-	//}
+	ignoreFile := filepath.Join(dir, ".gitignore")
+	_, err = os.Stat(ignoreFile)
+	// 如果存在 .gitignore 文件，则过滤要排除的文件
+	if err == nil {
+		log.Println("找到 .gitignore 文件, 将根据 .gitignore 文件过滤文件")
+		// 过滤要排除的文件
+		files, _ = internal.FilterFiles(files, ignoreFile)
+	} else {
+		log.Println("没有找到 .gitignore 文件, 将不会根据 .gitignore 文件过滤文件")
+	}
 
 	//过滤要排除的文件
 	//files = internal.FilterFiles(files, ignoreFiles)

@@ -3,10 +3,10 @@ package internal
 import (
 	"bufio"
 	"errors"
+	ignore "github.com/sabhiram/go-gitignore"
 	"io"
 	"log"
 	"os"
-	"strings"
 	"unicode"
 )
 
@@ -77,7 +77,7 @@ func WriteFile(filename string, content []byte) error {
 		if err != nil {
 			return err
 		}
-		log.Println("文件存在")
+		//log.Println("文件存在")
 	} else {
 		f, err = os.Create(filename) //创建文件
 		if err != nil {
@@ -97,35 +97,37 @@ func WriteFile(filename string, content []byte) error {
 	return err
 }
 
-// FilterFiles 根据忽略列表过滤文件名
-func FilterFiles(files, ignores []string) []string {
+// FilterFiles 过滤掉.gitignore忽略掉的文件
+func FilterFiles(files []string, ignoreFile string) ([]string, error) {
+
+	gi, err := ignore.CompileIgnoreFile(ignoreFile)
+	if err != nil {
+		return nil, err
+	}
 
 	var filtered []string
-
 	for _, file := range files {
-		ignored := false
-		for _, ignore := range ignores {
-			// if file == ignore {
-			// 	ignored = true
-			// 	break
-			// }
-
-			// 如果file这个目录中包含ignore这个目录，那么就忽略这个目录
-			if strings.Contains(file, ignore) {
-				ignored = true
-				break
-			}
-		}
-		if !ignored {
+		if !gi.MatchesPath(file) {
 			filtered = append(filtered, file)
 		}
 	}
-
-	return filtered
+	return filtered, nil
 }
 
-// IsIgnoreFileExist 检查是否有 .gitignore 文件
-func IsIgnoreFileExist(folder string) bool {
-	_, err := os.Stat(folder + "/.gitignore")
-	return err == nil
-}
+//func FilterFiles(files []string) ([]string, error) {
+//	dir, _ := os.Getwd()
+//	ignoreFile := filepath.Join(dir, ".gitignore")
+//	gi, err := ignore.CompileIgnoreFile(ignoreFile)
+//	if err != nil {
+//		return nil, err
+//	}
+//
+//	var filtered []string
+//	for _, file := range files {
+//		if !gi.MatchesPath(file) {
+//			filtered = append(filtered, file)
+//		}
+//	}
+//
+//	return filtered, nil
+//}
