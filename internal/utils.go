@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"unicode"
 )
 
@@ -56,6 +57,22 @@ func ReadFile(filename string) ([]byte, error) {
 			panic(err)
 		}
 	}(f)
+
+	// 获取当前工作目录
+	cwd, err := os.Getwd()
+	if err != nil {
+		return nil, err
+	}
+
+	// 将文件名转换为相对当前工作目录的路径
+	filename, err = filepath.Rel(cwd, filename)
+	if err != nil {
+		return nil, err
+	}
+
+	content = []byte("\n// " + filename + " BEGIN\n" +
+		string(content) +
+		"// " + filename + " END\n")
 
 	return content, err
 }
