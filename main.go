@@ -9,6 +9,11 @@ import (
 	"path/filepath"
 )
 
+var VERSION = "DEV-1.0"
+var GOVERSION = "UNKNOWN"
+var GITCOMMIT = "UNKNOWN*"
+var BUILDTIME = "UNKNOWN"
+
 func main() {
 	dir, _ := os.Getwd()
 
@@ -22,7 +27,7 @@ func main() {
 
 	flag.Parse()
 
-	internal.ShowVersion(showVersion)
+	ShowVersion(showVersion)
 
 	//输出当前所在目录
 	fmt.Println("当前目录:", dir)
@@ -65,4 +70,18 @@ func main() {
 	}
 
 	fmt.Println("合并成功!")
+}
+
+func version() string {
+	return fmt.Sprintf(`CodeMerge %s
+Git commit: %s,
+Build with %s
+Build at %s`, VERSION, GITCOMMIT, GOVERSION, BUILDTIME)
+}
+
+func ShowVersion(showVersion *bool) {
+	if *showVersion {
+		fmt.Println(version())
+		os.Exit(0)
+	}
 }
