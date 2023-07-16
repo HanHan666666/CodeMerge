@@ -31,6 +31,8 @@ A tool to merge project code into one txt.
 ## 应用场景
 
 - 发给 Claude2
+
+  <img alt="img.png" src="assert/img.png" width="500"/>
 - ~~申请软著~~
 
 ## 贡献代码的 commit 约定
