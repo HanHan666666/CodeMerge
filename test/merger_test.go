@@ -4,6 +4,8 @@ import (
 	"CodeMerge/internal"
 	"bufio"
 	"fmt"
+	ignore "github.com/sabhiram/go-gitignore"
+	"log"
 	"os"
 	"testing"
 	"unicode"
@@ -23,8 +25,16 @@ func TestMerge(t *testing.T) {
 	x, _ := internal.GetAllFileIncludeSubFolder("D:\\looook\\CodeMerge")
 	// fmt.Printf("x: %v\n", x)
 	for _, v := range x {
-		fmt.Printf("v: %v\n", v)
+		log.Printf("v: %v\n", v)
 	}
+	//x, err := internal.FilterFiles(x)
+	//log.Println("过滤后的内容：")
+	//for _, v := range x {
+	//	log.Printf("v: %v\n", v)
+	//}
+	//if err != nil {
+	//	log.Printf("err: %v\n", err)
+	//}
 	// ignore := []string{".git"}
 	// fmt.Printf("\"\": %v\n", "过滤后的内容：")
 	// c := internal.FilterFiles(x, ignore)
@@ -73,4 +83,15 @@ func TestFileClass(t *testing.T) {
 	} else {
 		fmt.Println(filename, "不是纯文本文件")
 	}
+}
+
+func TestGitignore(t *testing.T) {
+	dir, _ := os.Getwd()
+	ignoreFile := dir + "\\..\\" + ".gitignore"
+	gi, err := ignore.CompileIgnoreFile(ignoreFile)
+	if err != nil {
+		log.Printf("Error: %s\n", err)
+	}
+	//internal.FilterFiles("CodeMerged.txt")
+	log.Println(gi.MatchesPath(".idea/vcs.xml"))
 }

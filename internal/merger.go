@@ -17,16 +17,13 @@ func GetAllFileIncludeSubFolder(folder string) ([]string, error) {
 		}
 
 		if !fi.IsDir() {
-			if fi.Name()[0] != '.' {
-				result = append(result, path)
-			}
+			result = append(result, path)
 		} else {
 			// 如果这个目录是.开头的，说明是一个隐藏目录，忽略这个目录
 			if fi.Name()[0] == '.' {
 				return filepath.SkipDir
 			}
 		}
-
 		return nil
 	})
 	if err != nil {
@@ -47,6 +44,15 @@ func MergeFiles(outFile string, files []string) error {
 			log.Println("读取文件失败:", err)
 			continue
 		}
+		dir, _ := os.Getwd()
+		//提取file中的相对路径和文件名
+		relPath, _ := filepath.Rel(dir, file)
+
+		// 把relPath追加到content开头
+		content = []byte(relPath + "\n" + string(content))
+		// content后面加上两个换行
+		content = append(content, []byte("\n\n")...)
+
 		// 追加写入目标文件
 		err = WriteFile(outFile, content)
 		if err != nil {
