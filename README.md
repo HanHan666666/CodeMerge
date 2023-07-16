@@ -34,6 +34,20 @@ A tool to merge project code into one txt.
 
   <img alt="img.png" src="assert/img.png" width="500"/>
 - ~~申请软著~~
+## 编译并安装
+  
+```shell  
+    git clone git@github.com:HanHan666666/CodeMerge.git
+    cd CodeMerge
+    go install
+```
+
+或者
+```shell  
+    git clone git@github.com:HanHan666666/CodeMerge.git
+    cd CodeMerge
+    make install
+```
 
 ## 贡献代码的 commit 约定
 
