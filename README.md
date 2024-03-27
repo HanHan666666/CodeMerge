@@ -24,7 +24,7 @@ A tool to merge project code into one txt.
 也可以通过命令行参数来指定仅合并哪些文件
 ## 应用场景
 
-- 发给 Claude2
+- 发给 Claude 或者 GPT4
 - 申请软著
 
 ## 贡献代码的 commit 约定
