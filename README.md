@@ -1,5 +1,5 @@
 # CodeMerge
-
+该项目失去了意义，停更
 A tool to merge project code into one txt.
 
 一个将项目代码合并成一个 txt 的工具
